@@ -8,7 +8,7 @@ function startVideo() {
 }
 
 const loadLabels = async () => {
-    const response = await axios('http://localhost:5000/employees');
+    const response = await axios('https://hieutranvu.herokuapp.com/employees');
     console.log(response.data.data)
     let emmployee = response.data.data.filter(function (e) {
         return e.image.length > 0;
@@ -32,12 +32,12 @@ const loadLabels = async () => {
 }
 
 Promise.all([
-    faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-    faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-    faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
-    faceapi.nets.faceExpressionNet.loadFromUri('/models'),
-    faceapi.nets.ageGenderNet.loadFromUri('/models'),
-    faceapi.nets.ssdMobilenetv1.loadFromUri('/models'),
+    faceapi.nets.tinyFaceDetector.loadFromUri('/html-tvh/models'),
+    faceapi.nets.faceLandmark68Net.loadFromUri('/html-tvh/models'),
+    faceapi.nets.faceRecognitionNet.loadFromUri('/html-tvh/models'),
+    faceapi.nets.faceExpressionNet.loadFromUri('/html-tvh/models'),
+    faceapi.nets.ageGenderNet.loadFromUri('/html-tvh/models'),
+    faceapi.nets.ssdMobilenetv1.loadFromUri('/html-tvh/models'),
 ]).then(startVideo)
 
 
@@ -51,7 +51,7 @@ video.addEventListener('play', async () => {
     faceapi.matchDimensions(canvas, canvasSize)
     document.body.appendChild(canvas)
     await setInterval(async () => {
-        const response = await axios('http://localhost:5000/employees');
+        const response = await axios('https://hieutranvu.herokuapp.com/employees');
         const detections = await faceapi
             .detectAllFaces(
                 video,
@@ -74,7 +74,7 @@ video.addEventListener('play', async () => {
                 let emmployee = response.data.data.filter(function (e) {
                     return e._id == label;
                 });
-                axios.post('http://localhost:5000/employee/face-detect', { empId: emmployee[0]._id, hotelId: emmployee[0].hotelId })
+                axios.post('https://hieutranvu.herokuapp.com/employee/face-detect', { empId: emmployee[0]._id, hotelId: emmployee[0].hotelId })
                     document.getElementById("name").innerHTML = emmployee[0].empName;
                     document.getElementById("content").innerHTML = "Điểm danh thành công. Xin chào"
             } 
